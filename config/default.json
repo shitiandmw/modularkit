@@ -1,0 +1,9 @@
+{
+    "db": {
+        "type": "mongodb",
+        "mongodbUri": "mongodb://localhost:27017/mydatabase"
+    },
+    "logging": {
+        "level": "info"
+    }
+}

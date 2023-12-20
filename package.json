@@ -1,0 +1,45 @@
+{
+  "name": "modularkit",
+  "version": "0.0.1",
+  "description": "ModularKit is a plugin-based system framework designed for Node.js web applications. It allows developers to build and manage application features in a modular way, providing flexible plugin loading, route management, event handling, and database interaction.",
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "scripts": {
+    "build": "tsc",
+    "local": "cross-env NODE_ENV=localhost ts-node app.ts",
+    "localjs": "cross-env NODE_ENV=localhost node app.js",
+    "dev": "cross-env NODE_ENV=development ts-node app.ts",
+    "pre": "cross-env NODE_ENV=production ts-node app.ts"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/shitiandmw/modularkit.git"
+  },
+  "author": "shitiandmw",
+  "license": "SEE LICENSE IN LICENSE.md",
+  "bugs": {
+    "url": "https://github.com/shitiandmw/modularkit/issues"
+  },
+  "homepage": "https://github.com/shitiandmw/modularkit#readme",
+  "devDependencies": {
+    "@types/config": "^3.3.3",
+    "@types/koa": "^2.13.12",
+    "@types/koa-router": "^7.4.8",
+    "@types/mongoose": "^5.11.97",
+    "@types/node": "^20.10.5",
+    "cross-env": "^7.0.3",
+    "pino-pretty": "^10.3.0",
+    "pino-roll": "^1.0.0-rc.1",
+    "typescript": "^5.3.3"
+  },
+  "dependencies": {
+    "config": "^3.3.9",
+    "execa": "^8.0.1",
+    "koa": "^2.14.2",
+    "koa-router": "^12.0.1",
+    "mongoose": "^8.0.3",
+    "pino": "^8.17.1",
+    "winston": "^3.11.0"
+  },
+  "type": "module"
+}
