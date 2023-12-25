@@ -25,7 +25,7 @@ class PluginLoader {
     pluginsPath;
     logger;
     constructor(dependencies = {}) {
-        this.pluginsPath = dependencies.pluginsPath || path_1.default.join(__dirname, '../plugins');
+        this.pluginsPath = dependencies.pluginsPath || path_1.default.join(process.cwd(), 'plugins');
         this.logger = dependencies.logger || LoggerManager_1.Pino.getInstance();
         this.routeManager = new RouteManager_1.RouteManager();
         this.eventManager = new EventManager_1.EventManager();
@@ -67,6 +67,7 @@ class PluginLoader {
     async connectDB() {
         try {
             const db = config_1.default.get('db');
+            this.logger.info("db.type" + db.type);
             if (db.type === 'mongodb') {
                 await mongoose_1.default.connect(db.mongodbUri, { serverSelectionTimeoutMS: 5000 });
                 this.logger.info('Database connected successfully');

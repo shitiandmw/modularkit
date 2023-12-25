@@ -5,10 +5,10 @@ export declare class Pino {
     static getInstance(): Logger;
 }
 export interface LoggerInterface {
-    trace(message: string): void;
-    debug(message: string): void;
-    info(message: string): void;
-    warn(message: string): void;
+    trace(message: string | any): void;
+    debug(message: string | any): void;
+    info(message: string | any): void;
+    warn(message: string | any): void;
     error(message: string | any): void;
-    fatal?(message: string): void;
+    fatal?(message: string | any): void;
 }
