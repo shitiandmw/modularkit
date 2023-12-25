@@ -5,12 +5,13 @@ export class Pino {
     }
     static getInstance() {
         if (!Pino.instance) {
-            const transport = pino.transport({
-                target: 'pino-pretty'
-            });
             Pino.instance = pino({
                 level: 'trace',
-            }, transport);
+                // 使用pino-pretty格式化输出后，pm2的集群模式无法输出日志，暂时不使用
+                // transport: {
+                //     target: 'pino-pretty'
+                // },
+            });
         }
         return Pino.instance;
     }
