@@ -1,6 +1,6 @@
 {
     "db": {
-        "type": "mongodb",
+        "type": "mongodb1",
         "mongodbUri": "mongodb://localhost:27017/mydatabase"
     }
 }

@@ -134,7 +134,10 @@ export class PluginLoader {
         try {
             this.logger.info(`Loading plugin ${pluginName} ...`);
             const pluginPath = path.join(this.pluginsPath, pluginName);
-            const PluginClass = require(pluginPath).default;
+            // const PluginModule = await import(pluginPath); 
+            const PluginModule = require(pluginPath); 
+            const PluginClass = PluginModule.default || PluginModule.Plugin ||  PluginModule; 
+        
            
             const pluginDependencies: PluginDependencies = {
                 routerInterface: this.routeManager.getInterface(pluginName),
@@ -143,8 +146,11 @@ export class PluginLoader {
                 modelFactoryInterface: this.modelFactory.getInterface(pluginName),
                 loggerInterface: this.logger
             };
+
+            
             const plugin: Plugin = new PluginClass(pluginDependencies);
             plugin.initialize();
+            this.logger.info(`Loading plugin ${pluginName} completed `);
         } catch (error) {
             this.logger.error(`Error loading plugin ${pluginName}: ${ error instanceof Error ? error.message : ""}`);
         }

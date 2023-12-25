@@ -14,7 +14,7 @@ export class RouteManager {
 
     public getInterface(pluginName: string) {
         return {
-            registerRoutes: (pluginName: string, router: Router):void => {
+            registerRoutes: (router: Router):void => {
                 const prefixedRouter = new Router();
                 prefixedRouter.use(`/${pluginName}`, router.routes(), router.allowedMethods());
                 // 将前缀化的路由注册到全局路由器中
@@ -30,5 +30,5 @@ export interface RouteInterface {
      * @param pluginName 插件名 
      * @param router 路由器 
      */
-    registerRoutes: (pluginName: string, router: Router) => void;
+    registerRoutes: (router: Router) => void;
 }
