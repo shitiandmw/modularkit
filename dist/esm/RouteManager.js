@@ -10,7 +10,7 @@ export class RouteManager {
     }
     getInterface(pluginName) {
         return {
-            registerRoutes: (pluginName, router) => {
+            registerRoutes: (router) => {
                 const prefixedRouter = new Router();
                 prefixedRouter.use(`/${pluginName}`, router.routes(), router.allowedMethods());
                 // 将前缀化的路由注册到全局路由器中

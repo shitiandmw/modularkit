@@ -16,7 +16,7 @@ class RouteManager {
     }
     getInterface(pluginName) {
         return {
-            registerRoutes: (pluginName, router) => {
+            registerRoutes: (router) => {
                 const prefixedRouter = new koa_router_1.default();
                 prefixedRouter.use(`/${pluginName}`, router.routes(), router.allowedMethods());
                 // 将前缀化的路由注册到全局路由器中

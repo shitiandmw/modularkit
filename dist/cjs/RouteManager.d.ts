@@ -4,7 +4,7 @@ export declare class RouteManager {
     constructor();
     routeMiddleware(): Router.IMiddleware;
     getInterface(pluginName: string): {
-        registerRoutes: (pluginName: string, router: Router) => void;
+        registerRoutes: (router: Router) => void;
     };
 }
 export interface RouteInterface {
@@ -13,5 +13,5 @@ export interface RouteInterface {
      * @param pluginName 插件名
      * @param router 路由器
      */
-    registerRoutes: (pluginName: string, router: Router) => void;
+    registerRoutes: (router: Router) => void;
 }
