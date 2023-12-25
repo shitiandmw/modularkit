@@ -1,4 +1,8 @@
-export class ApiManager {
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
+exports.ApiManager = void 0;
+class ApiManager {
+    apis;
     constructor() {
         this.apis = {};
     }
@@ -20,3 +24,5 @@ export class ApiManager {
         };
     }
 }
+exports.ApiManager = ApiManager;
+//# sourceMappingURL=ApiManager.js.map

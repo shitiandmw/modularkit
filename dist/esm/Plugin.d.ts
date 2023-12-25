@@ -3,8 +3,6 @@ import { ApiInterface } from './ApiManager';
 import { ModelFactoryInterface } from './ModelFactory';
 import { RouteInterface } from './RouteManager';
 import { LoggerInterface } from './LoggerManager';
-
-
 export interface PluginDependencies {
     routerInterface?: RouteInterface;
     eventInterface?: EventInterface;
@@ -12,7 +10,6 @@ export interface PluginDependencies {
     modelFactoryInterface?: ModelFactoryInterface;
     loggerInterface?: LoggerInterface;
 }
-
 export interface Plugin {
     constructor(dependencies: PluginDependencies): void;
     initialize(): void;

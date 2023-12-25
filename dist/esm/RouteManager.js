@@ -1,5 +1,6 @@
 import Router from 'koa-router';
 export class RouteManager {
+    globalRouter;
     constructor() {
         this.globalRouter = new Router();
     }
@@ -18,3 +19,4 @@ export class RouteManager {
         };
     }
 }
+//# sourceMappingURL=RouteManager.js.map

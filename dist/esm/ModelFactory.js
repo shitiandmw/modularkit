@@ -1,4 +1,5 @@
 export class ModelFactory {
+    mongooseInstance;
     constructor(mongooseInstance) {
         this.mongooseInstance = mongooseInstance;
     }
@@ -11,3 +12,4 @@ export class ModelFactory {
         };
     }
 }
+//# sourceMappingURL=ModelFactory.js.map

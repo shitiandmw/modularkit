@@ -7,17 +7,11 @@ import { EventManager , EventInterface } from './EventManager';
 import { ApiManager } from './ApiManager';
 import { ModelFactory } from './ModelFactory';
 import { Plugin, PluginDependencies } from './Plugin';
-import { execa } from 'execa';
+import { exec } from 'child_process';
+import { Pino, LoggerInterface } from './LoggerManager';
 
 
-interface LoggerInterface {
-    trace(message: string): void; // 跟踪
-    debug(message: string): void; // 调试 
-    info(message: string): void;  // 信息
-    warn(message: string): void;  // 警告
-    error(message: string | any): void;  // 错误
-    fatal?(message: string): void;  // 致命
-}
+
 
 interface PluginLoaderDependencies {
     // 自定义的插件路径
@@ -49,7 +43,7 @@ export class PluginLoader {
 
     constructor(dependencies: PluginLoaderDependencies = {}) {
         this.pluginsPath = dependencies.pluginsPath || path.join(__dirname, '../plugins');
-        this.logger = dependencies.logger || console;
+        this.logger = dependencies.logger || Pino.getInstance();
         this.routeManager = new RouteManager();
         this.eventManager = new EventManager();
         this.apiManager = new ApiManager();
@@ -97,6 +91,7 @@ export class PluginLoader {
     private async connectDB() {
         try {
             const db: DbConfig = config.get('db');
+            this.logger.info("db.type"+db.type);
             if (db.type === 'mongodb') {
                 await mongoose.connect(db.mongodbUri, { serverSelectionTimeoutMS: 5000 });
                 this.logger.info('Database connected successfully');
@@ -114,7 +109,13 @@ export class PluginLoader {
             const pluginPath = path.join(this.pluginsPath, pluginName);
             if (fs.existsSync(`${pluginPath}/package.json`)) {
                 this.logger.info(`Installing NPM dependencies for plugin ${pluginPath}`);
-                await execa('npm', ['install'], { cwd: pluginPath });
+                await new Promise((resolve, reject) => {
+                    exec(`npm install`, { cwd: pluginPath }, (error, stdout, stderr) => {
+                        if (error) reject(error);
+                        else resolve({});
+                    });
+                });
+                this.logger.info(`Dependencies installed for ${pluginName}`);
             }
             else this.logger.warn(`No package.json found for plugin ${pluginName}`);
         } catch (error) {
@@ -125,12 +126,13 @@ export class PluginLoader {
                 error_message += `:${error.stderr}`;
             this.logger.error(error_message);
         }
+        
     }
 
     // 加载插件
     private async loadPlugin(pluginName: string) {
         try {
-            this.logger.info(`Loading plugin ${pluginName}`);
+            this.logger.info(`Loading plugin ${pluginName} ...`);
             const pluginPath = path.join(this.pluginsPath, pluginName);
             const PluginClass = require(pluginPath).default;
            
@@ -138,7 +140,8 @@ export class PluginLoader {
                 routerInterface: this.routeManager.getInterface(pluginName),
                 eventInterface: this.eventManager.getInterface(pluginName),
                 apiInterface: this.apiManager.getInterface(pluginName),
-                modelFactoryInterface: this.modelFactory.getInterface(pluginName)
+                modelFactoryInterface: this.modelFactory.getInterface(pluginName),
+                loggerInterface: this.logger
             };
             const plugin: Plugin = new PluginClass(pluginDependencies);
             plugin.initialize();

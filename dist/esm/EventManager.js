@@ -32,3 +32,4 @@ export class EventManager extends EventEmitter {
         };
     }
 }
+//# sourceMappingURL=EventManager.js.map

@@ -1,4 +1,5 @@
 export class ApiManager {
+    apis;
     constructor() {
         this.apis = {};
     }
@@ -20,3 +21,4 @@ export class ApiManager {
         };
     }
 }
+//# sourceMappingURL=ApiManager.js.map

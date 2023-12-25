@@ -1,4 +1,8 @@
-export class ModelFactory {
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
+exports.ModelFactory = void 0;
+class ModelFactory {
+    mongooseInstance;
     constructor(mongooseInstance) {
         this.mongooseInstance = mongooseInstance;
     }
@@ -11,3 +15,5 @@ export class ModelFactory {
         };
     }
 }
+exports.ModelFactory = ModelFactory;
+//# sourceMappingURL=ModelFactory.js.map

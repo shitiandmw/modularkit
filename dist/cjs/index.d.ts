@@ -1,12 +1,5 @@
 /// <reference types="koa-router" />
-interface LoggerInterface {
-    trace(message: string): void;
-    debug(message: string): void;
-    info(message: string): void;
-    warn(message: string): void;
-    error(message: string | any): void;
-    fatal?(message: string): void;
-}
+import { LoggerInterface } from './LoggerManager';
 interface PluginLoaderDependencies {
     pluginsPath?: string;
     logger?: LoggerInterface;

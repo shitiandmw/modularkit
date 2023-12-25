@@ -1,15 +1,20 @@
 {
   "name": "modularkit",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "description": "ModularKit is a plugin-based system framework designed for Node.js web applications. It allows developers to build and manage application features in a modular way, providing flexible plugin loading, route management, event handling, and database interaction.",
-  "main": "dist/index.js",
-  "types": "dist/index.d.ts",
+  
+  "main": "dist/cjs/index.js",
+  "module": "dist/esm/index.js",
+  "types": "dist/esm/index.d.ts",
+  "exports": {
+    "import": "./dist/esm/index.js",
+    "require": "./dist/cjs/index.js"
+  },
   "scripts": {
-    "build": "tsc",
-    "local": "cross-env NODE_ENV=localhost ts-node app.ts",
-    "localjs": "cross-env NODE_ENV=localhost node app.js",
-    "dev": "cross-env NODE_ENV=development ts-node app.ts",
-    "pre": "cross-env NODE_ENV=production ts-node app.ts"
+    "build": "tsc -p tsconfig.cjs.json && tsc -p tsconfig.esm.json",
+    "local": "cross-env NODE_ENV=localhost ts-node app.test.ts",
+    "dev": "cross-env NODE_ENV=development ts-node app.test.ts",
+    "pre": "cross-env NODE_ENV=production ts-node app.test.ts"
   },
   "repository": {
     "type": "git",
@@ -40,6 +45,5 @@
     "mongoose": "^8.0.3",
     "pino": "^8.17.1",
     "winston": "^3.11.0"
-  },
-  "type": "module"
+  }
 }

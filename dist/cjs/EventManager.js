@@ -1,5 +1,8 @@
-import { EventEmitter } from 'events';
-export class EventManager extends EventEmitter {
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
+exports.EventManager = void 0;
+const events_1 = require("events");
+class EventManager extends events_1.EventEmitter {
     constructor() {
         super();
     }
@@ -32,3 +35,5 @@ export class EventManager extends EventEmitter {
         };
     }
 }
+exports.EventManager = EventManager;
+//# sourceMappingURL=EventManager.js.map
