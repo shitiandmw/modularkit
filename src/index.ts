@@ -42,7 +42,7 @@ export class PluginLoader {
     private logger: LoggerInterface;
 
     constructor(dependencies: PluginLoaderDependencies = {}) {
-        this.pluginsPath = dependencies.pluginsPath || path.join(__dirname, '../plugins');
+        this.pluginsPath = dependencies.pluginsPath || path.join( process.cwd(), 'plugins') ;
         this.logger = dependencies.logger || Pino.getInstance();
         this.routeManager = new RouteManager();
         this.eventManager = new EventManager();
