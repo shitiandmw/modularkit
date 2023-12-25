@@ -1,5 +1,4 @@
 import pino, { Logger } from "pino";
-
 export class Pino {
     static instance: Logger;
     constructor() {

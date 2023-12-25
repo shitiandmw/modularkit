@@ -32,17 +32,15 @@
     "@types/mongoose": "^5.11.97",
     "@types/node": "^20.10.5",
     "cross-env": "^7.0.3",
-    "pino-pretty": "^10.3.0",
     "pino-roll": "^1.0.0-rc.1",
-    "typescript": "^5.3.3"
+    "typescript": "^5.3.3",
+    "koa": "^2.14.2"
   },
   "dependencies": {
     "config": "^3.3.9",
-    "execa": "^8.0.1",
-    "koa": "^2.14.2",
     "koa-router": "^12.0.1",
     "mongoose": "^8.0.3",
     "pino": "^8.17.1",
-    "winston": "^3.11.0"
+    "pino-pretty": "^10.3.0"
   }
 }

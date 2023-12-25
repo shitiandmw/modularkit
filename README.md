@@ -1,4 +1,4 @@
-# ModularKit
+# WBrick
 
 
 <div style="font-size: 1.5rem;">
@@ -8,7 +8,7 @@
 </br>
 
 
-ModularKit is a plugin-based system framework designed for Node.js web applications. It allows developers to build and manage application features in a modular way, providing flexible plugin loading, route management, event handling, and database interaction.
+WBrick is a plugin-based system framework designed for Node.js web applications. It allows developers to build and manage application features in a modular way, providing flexible plugin loading, route management, event handling, and database interaction.
 
 ## Features
 
@@ -20,22 +20,22 @@ ModularKit is a plugin-based system framework designed for Node.js web applicati
 
 ## Installation
 
-Install ModularKit using npm:
+Install WBrick using npm:
 
 ```bash
-npm install modularkit
+npm install WBrick
 ```
 
 ## Getting Started
-Here's a basic example of how to use ModularKit in your Node.js application.
+Here's a basic example of how to use WBrick in your Node.js application.
 
 First, create a plugin:
 
 ```javascript
 // plugins/YourPlugin.js
 class YourPlugin {
-    constructor(modularkit) {
-        this.routeManager = modularkit.routeManager;
+    constructor(WBrick) {
+        this.routeManager = WBrick.routeManager;
         // ...other managers
     }
 
@@ -51,7 +51,7 @@ Then, load and initialize the plugin in your application:
 
 ```javascript
 const Koa = require('koa');
-const { PluginLoader } = require('modularkit');
+const { PluginLoader } = require('WBrick');
 const path = require('path');
 
 const app = new Koa();

@@ -1,6 +1,6 @@
-# ModularKit
+# WBrick
 
-ModularKit 是一个为 Node.js Web应用设计的插件化系统框架。它允许开发者以模块化的方式构建和管理应用功能，提供了灵活的插件加载、路由管理、事件处理和数据库交互功能。
+WBrick 是一个为 Node.js Web应用设计的插件化系统框架。它允许开发者以模块化的方式构建和管理应用功能，提供了灵活的插件加载、路由管理、事件处理和数据库交互功能。
 
 ## 特点
 
@@ -44,22 +44,22 @@ ModularKit 是一个为 Node.js Web应用设计的插件化系统框架。它允
 ## 安装
 
 
-使用 npm 安装 ModularKit:
+使用 npm 安装 WBrick:
 
 ```bash
-npm install modularkit
+npm install WBrick
 ```
 
 ## 快速开始
-以下是如何在您的 Node.js 应用中使用 ModularKit 的一个基本示例。
+以下是如何在您的 Node.js 应用中使用 WBrick 的一个基本示例。
 
 首先，创建一个插件：
 
 ```javascript
 // plugins/YourPlugin.js
 class YourPlugin {
-    constructor(modularkit) {
-        this.routeManager = modularkit.routeManager;
+    constructor(WBrick) {
+        this.routeManager = WBrick.routeManager;
         // ...其他管理器
     }
 
@@ -75,7 +75,7 @@ module.exports = YourPlugin;
 
 ```javascript
 const Koa = require('koa');
-const { PluginLoader } = require('modularkit');
+const { PluginLoader } = require('WBrick');
 const path = require('path');
 
 const app = new Koa();
