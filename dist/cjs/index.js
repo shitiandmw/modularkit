@@ -6,14 +6,13 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.PluginLoader = void 0;
 const fs_1 = __importDefault(require("fs"));
 const path_1 = __importDefault(require("path"));
-const mongoose_1 = __importDefault(require("mongoose"));
-const config_1 = __importDefault(require("config"));
 const RouteManager_1 = require("./RouteManager");
 const EventManager_1 = require("./EventManager");
 const ApiManager_1 = require("./ApiManager");
-const ModelFactory_1 = require("./ModelFactory");
 const child_process_1 = require("child_process");
 const LoggerManager_1 = require("./LoggerManager");
+const MongoManager_1 = require("./MongoManager");
+const RedisManager_1 = require("./RedisManager");
 /**
  * 插件加载器
  */
@@ -21,7 +20,8 @@ class PluginLoader {
     routeManager;
     eventManager;
     apiManager;
-    modelFactory;
+    mongoManager;
+    redisManager;
     pluginsPath;
     logger;
     constructor(dependencies = {}) {
@@ -30,11 +30,13 @@ class PluginLoader {
         this.routeManager = new RouteManager_1.RouteManager();
         this.eventManager = new EventManager_1.EventManager();
         this.apiManager = new ApiManager_1.ApiManager();
-        this.modelFactory = new ModelFactory_1.ModelFactory(mongoose_1.default);
+        this.mongoManager = new MongoManager_1.MongoManager(this.logger);
+        this.redisManager = new RedisManager_1.RedisManager(this.logger);
     }
     // 初始化插件
     async initialize() {
-        await this.connectDB();
+        await this.mongoManager.initialize();
+        this.redisManager.initialize();
         await this.loadPlugins();
     }
     // 获取路由中间件
@@ -61,22 +63,6 @@ class PluginLoader {
         }
         catch (error) {
             this.logger.error(error);
-        }
-    }
-    // 连接数据库
-    async connectDB() {
-        try {
-            const db = config_1.default.get('db');
-            this.logger.info("db.type" + db.type);
-            if (db.type === 'mongodb') {
-                await mongoose_1.default.connect(db.mongodbUri, { serverSelectionTimeoutMS: 5000 });
-                this.logger.info('Database connected successfully');
-            }
-        }
-        catch (error) {
-            this.logger.error(`Database connection failed : ${error instanceof Error ? error.message : ""}}`);
-            // 数据库连接失败退出应用
-            process.exit(1);
         }
     }
     // 安装插件依赖的NPM包
@@ -119,7 +105,8 @@ class PluginLoader {
                 routerInterface: this.routeManager.getInterface(pluginName),
                 eventInterface: this.eventManager.getInterface(pluginName),
                 apiInterface: this.apiManager.getInterface(pluginName),
-                modelFactoryInterface: this.modelFactory.getInterface(pluginName),
+                mongoInterface: this.mongoManager.getInterface(pluginName),
+                redisInterface: this.redisManager.getInterface(pluginName),
                 loggerInterface: this.logger
             };
             const plugin = new PluginClass(pluginDependencies);
