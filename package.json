@@ -17,14 +17,14 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/shitiandmw/modularkit.git"
+    "url": "git+https://github.com/shitiandmw/wbrick.git"
   },
   "author": "shitiandmw",
   "license": "SEE LICENSE IN LICENSE.md",
   "bugs": {
-    "url": "https://github.com/shitiandmw/modularkit/issues"
+    "url": "https://github.com/shitiandmw/wbrick/issues"
   },
-  "homepage": "https://github.com/shitiandmw/modularkit#readme",
+  "homepage": "https://github.com/shitiandmw/wbrick#readme",
   "devDependencies": {
     "@types/config": "^3.3.3",
     "@types/koa": "^2.13.12",

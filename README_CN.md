@@ -109,5 +109,10 @@ export interface PluginDependencies {
 
 更详细的文档和API参考请查看 [文档链接]()。
 
+## 示例
+
+示例项目地址：[链接](https://github.com/shitiandmw/wbrick-demo.git)
+
 ## 许可证
+
 MIT © shitiandmw

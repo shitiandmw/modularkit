@@ -115,5 +115,10 @@ For specific interface definitions, please refer to the source code. Documentati
 
 For more detailed documentation and API reference, please see [Documentation Link]().
 
+## Example
+
+Sample project address: [Link](https://github.com/shitiandmw/wbrick-demo.git)
+
+
 ## License
 MIT © shitiandmw
