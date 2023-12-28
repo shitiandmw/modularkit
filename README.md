@@ -81,22 +81,14 @@ The following are the core modules injected in the plugin constructor `construct
 
 ```javascript
 export interface PluginDependencies {
-    routerInterface?: RouteInterface;
-    eventInterface?: EventInterface;
-    apiInterface?: ApiInterface;
-    modelFactoryInterface?: ModelFactoryInterface;
-    loggerInterface?: LoggerInterface;
+    routerInterface?: RouteInterface;   // Router Interface Module, exposes router registration methods, allowing each plugin to have its own routes.
+    eventInterface?: EventInterface;    // Event Loop Communication Module, implements inter-plugin event communication through event publishing, subscribing, and unsubscribing. The interface is as follows:
+    apiInterface?: ApiInterface;        // Interface Communication Module, enables plugin API registration and invocation, facilitating communication between plugins.
+    mongoInterface?: MongoInterface;    // Data access functionality for the MongoDB component, providing MongoDB database management capabilities.
+    redisInterface?: RedisInterface;    // Redis caching component, offering caching read and write functionality.
+    loggerInterface?: LoggerInterface;  // Log manager, a unified log manager that allows plugins to record their own logs.
 }
 ```
-
-- **routerInterface**: Routing interface module, exposing route registration methods, allowing each plugin to have its own routes.
-- **eventInterface**: Event loop communication module, implementing a communication mechanism between plugins through event publication, subscription, and unsubscription.
-- **apiInterface**: Interface communication module, enabling communication between plugins through API registration and invocation.
-- **Database Management**:
-    + **modelFactoryInterface**: MongoDB component's data access function, providing MongoDB database management features.
-    + **ioredis**: Cache component, offering cache read and write functions *[Not Implemented Yet]*
-- **loggerInterface**: Log manager, a unified log manager that allows plugins to record their own logs.
-
 For specific interface definitions, please refer to the source code. Documentation to follow.
 
 ## Features to be Potentially Implemented [In Progress...]

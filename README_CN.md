@@ -74,21 +74,14 @@ pluginLoader.initialize().then(() => {
 
 ``` javascript 
 export interface PluginDependencies {
-    routerInterface?: RouteInterface;
-    eventInterface?: EventInterface;
-    apiInterface?: ApiInterface;
-    modelFactoryInterface?: ModelFactoryInterface;
-    loggerInterface?: LoggerInterface;
+    routerInterface?: RouteInterface;   // 路由接口模块,暴露路由注册方法，让每个插件可以拥有自己的路由
+    eventInterface?: EventInterface;    // 事件循环通讯模块，通过事件的发布、订阅、取消订阅，实现插件之间的事件通讯机制，接口如下
+    apiInterface?: ApiInterface;        // 接口通讯模块，通过插件的API注册、调用。实现插件之间的通讯
+    mongoInterface?: MongoInterface;    // mongodb组件的数据访问功能，提供mongodb数据库管理功能
+    redisInterface?: RedisInterface;    // redis缓存组件，提供缓存读写功能
+    loggerInterface?: LoggerInterface;  //日志管理器，统一的日志管理器，允许插件记录自己的日志
 }
 ```
-
-- **routerInterface** 路由接口模块,暴露路由注册方法，让每个插件可以拥有自己的路由
-- **eventInterface** 事件循环通讯模块，通过事件的发布、订阅、取消订阅，实现插件之间的事件通讯机制，接口如下
-- **apiInterface** 接口通讯模块，通过插件的API注册、调用。实现插件之间的通讯
-- **数据库管理**
-    + **modelFactoryInterface** mongodb组件的数据访问功能，提供mongodb数据库管理功能
-    + **ioredis** 缓存组件，提供缓存读写功能 *[未实现]*
-- **loggerInterface** 日志管理器，统一的日志管理器，允许插件记录自己的日志
 
 具体接口定义请查看源码，文档延后
 

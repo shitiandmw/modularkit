@@ -19,6 +19,16 @@ module.exports = class Plugin {
             console.log("plugin.path",ctx.path);
             ctx.body = 'Response from Plugin A';
         });
+        this.router.get('/getcache', async ctx => {
+            console.log("plugin.path",ctx.path);
+            let value = await this.dependencies.redisInterface.get("test");
+            ctx.body = 'Response from Plugin A getcache:'+ value;
+        });
+        this.router.get('/setcache', async ctx => {
+            console.log("plugin.path",ctx.path);
+            this.dependencies.redisInterface.set("test","test111111111");
+            ctx.body = 'Response from Plugin A setcache';
+        });
         // 其他路由...
     }
 };

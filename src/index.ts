@@ -1,32 +1,28 @@
 import fs from 'fs';
 import path from 'path';
-import mongoose from 'mongoose';
 import config from 'config';
 import { RouteManager } from './RouteManager';
-import { EventManager , EventInterface } from './EventManager';
+import { EventManager, EventInterface } from './EventManager';
 import { ApiManager } from './ApiManager';
-import { ModelFactory } from './ModelFactory';
-import { Plugin, PluginDependencies } from './Plugin';
+import { PluginInterface, PluginDependencies } from './PluginInterface';
 import { exec } from 'child_process';
 import { Pino, LoggerInterface } from './LoggerManager';
+import { MongoManager, DbConfig } from './MongoManager';
+import { CacheConfig, RedisManager, RedisInterface } from './RedisManager';
 
 
 
-
-interface PluginLoaderDependencies {
+export interface PluginLoaderDependencies {
     // 自定义的插件路径
     pluginsPath?: string;
     // 日志记录器
     logger?: LoggerInterface;
 }
 
-interface DbConfig {
-    type: string,
-    mongodbUri: string
-}
 
-interface AppConfig {
-    db: DbConfig
+export interface AppConfig {
+    db: DbConfig,
+    cache: CacheConfig
 }
 
 /**
@@ -36,28 +32,31 @@ export class PluginLoader {
     private routeManager: RouteManager;
     private eventManager: EventManager;
     private apiManager: ApiManager;
-    private modelFactory: ModelFactory;
+    private mongoManager: MongoManager;
+    private redisManager: RedisManager;
 
     private pluginsPath: string;
     private logger: LoggerInterface;
 
     constructor(dependencies: PluginLoaderDependencies = {}) {
-        this.pluginsPath = dependencies.pluginsPath || path.join( process.cwd(), 'plugins') ;
+        this.pluginsPath = dependencies.pluginsPath || path.join(process.cwd(), 'plugins');
         this.logger = dependencies.logger || Pino.getInstance();
         this.routeManager = new RouteManager();
         this.eventManager = new EventManager();
         this.apiManager = new ApiManager();
-        this.modelFactory = new ModelFactory(mongoose);
+        this.mongoManager = new MongoManager(this.logger);
+        this.redisManager = new RedisManager(this.logger);
     }
 
     // 初始化插件
     public async initialize() {
-        await this.connectDB();
+        await this.mongoManager.initialize();
+        this.redisManager.initialize();
         await this.loadPlugins();
     }
 
     // 获取路由中间件
-    public getRouteMiddleware(){
+    public getRouteMiddleware() {
         return this.routeManager.routeMiddleware();
     }
 
@@ -78,29 +77,12 @@ export class PluginLoader {
                     await this.installPluginNPM(pluginName);
                     await this.loadPlugin(pluginName);
                 }
-    
+
             }
         } catch (error) {
             this.logger.error(error);
         }
-        
-    }
 
-
-    // 连接数据库
-    private async connectDB() {
-        try {
-            const db: DbConfig = config.get('db');
-            this.logger.info("db.type"+db.type);
-            if (db.type === 'mongodb') {
-                await mongoose.connect(db.mongodbUri, { serverSelectionTimeoutMS: 5000 });
-                this.logger.info('Database connected successfully');
-            }
-        } catch (error) {
-            this.logger.error(`Database connection failed : ${ error instanceof Error ? error.message : "" }}`);
-            // 数据库连接失败退出应用
-            process.exit(1);
-        }
     }
 
     // 安装插件依赖的NPM包
@@ -126,7 +108,7 @@ export class PluginLoader {
                 error_message += `:${error.stderr}`;
             this.logger.error(error_message);
         }
-        
+
     }
 
     // 加载插件
@@ -135,24 +117,25 @@ export class PluginLoader {
             this.logger.info(`Loading plugin ${pluginName} ...`);
             const pluginPath = path.join(this.pluginsPath, pluginName);
             // const PluginModule = await import(pluginPath); 
-            const PluginModule = require(pluginPath); 
-            const PluginClass = PluginModule.default || PluginModule.Plugin ||  PluginModule; 
-        
-           
+            const PluginModule = require(pluginPath);
+            const PluginClass = PluginModule.default || PluginModule.Plugin || PluginModule;
+
+
             const pluginDependencies: PluginDependencies = {
                 routerInterface: this.routeManager.getInterface(pluginName),
                 eventInterface: this.eventManager.getInterface(pluginName),
                 apiInterface: this.apiManager.getInterface(pluginName),
-                modelFactoryInterface: this.modelFactory.getInterface(pluginName),
+                mongoInterface: this.mongoManager.getInterface(pluginName),
+                redisInterface: this.redisManager.getInterface(pluginName),
                 loggerInterface: this.logger
             };
 
-            
-            const plugin: Plugin = new PluginClass(pluginDependencies);
+
+            const plugin: PluginInterface = new PluginClass(pluginDependencies);
             plugin.initialize();
             this.logger.info(`Loading plugin ${pluginName} completed `);
         } catch (error) {
-            this.logger.error(`Error loading plugin ${pluginName}: ${ error instanceof Error ? error.message : ""}`);
+            this.logger.error(`Error loading plugin ${pluginName}: ${error instanceof Error ? error.message : ""}`);
         }
     }
 }

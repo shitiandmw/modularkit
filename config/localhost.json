@@ -1,6 +1,26 @@
 {
     "db": {
-        "type": "mongodb1",
-        "mongodbUri": "mongodb://localhost:27017/mydatabase"
+        "type": "mongodb",
+        "mongodb": {
+            "url": "mongodb://localhost:17021/wbrick_demo?authSource=admin",
+            "options": {
+                "user": "dbroot",
+                "pass": "Gri42Mvyk3j2PXIiTdn6CCA8JDSST7yv",
+                "serverSelectionTimeoutMS":5000
+            }
+        }
+    },
+    "cache":{
+        "type": "redis",
+        "redis":{
+            "port": 17023,
+            "host": "localhost",
+            "password":"lfluYk4reffZDjzzXfeNA2ub9odfJ1Ic", 
+            "db": 1,
+            "keyPrefix": "wbrick_demo_"
+        }
+    },
+    "logging": {
+        "level": "info"
     }
 }
