@@ -7,7 +7,7 @@ export class ApiManager {
         this.apis = {};
     }
 
-    public getInterface(pluginName: string) {
+    public getInterface(pluginName: string):ApiInterface {
         return {
             registerApi: (apiName: string, handler: ApiHandler): void => {
                 if (!this.apis[pluginName]) {

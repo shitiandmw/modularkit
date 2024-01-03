@@ -14,41 +14,45 @@ export class RedisManager {
 
     constructor(private logger: LoggerInterface, private expSeconds: number = 60) { }
 
-    public initialize() {
+    public async initialize() {
         if (!this.client) {
             const cacheConfig: any = config.get('cache');
             if (cacheConfig.type === 'redis') {
-                try {
-                    const redisConfig = cacheConfig.redis;
-                    if (!redisConfig) {
-                        throw new Error(' No redis config found in config file');
+                await new Promise((resolve, reject) => {
+                    try {
+                        const redisConfig = cacheConfig.redis;
+                        if (!redisConfig) {
+                            throw new Error(' No redis config found in config file');
+                        }
+                        let client = new Redis(redisConfig);
+                        client.on('connect', () => {
+                            this.logger.info('redis client connect success');
+                            resolve(null);
+                        });
+                        client.on('error', (error: Error) => {
+                            this.logger.error('redis client error');
+                            this.logger.error(error);
+                            reject(error);
+                        });
+                      
+                        // 添加一个加锁的批处理命令
+                        client.defineCommand('addlock', {
+                            numberOfKeys: 2,
+                            lua: `if redis.call('SETNX', KEYS[1], ARGV[1]) == 1 then redis.call('PEXPIRE',KEYS[1],ARGV[2]) return 1 else return 0 end`,
+                        });
+                        // 添加一个解锁的批处理命令
+                        client.defineCommand('dellock', {
+                            numberOfKeys: 1,
+                            lua: `if redis.call('get', KEYS[1]) == ARGV[1] then return redis.call('del', KEYS[1]) else return 0 end`,
+                        });
+                        this.client = client;
+    
+                    } catch (error) {
+                        this.logger.error(`Redis connection failed : ${error instanceof Error ? error.message : ""}}`);
+                        // 缓存中间件连接失败退出应用
+                        process.exit(1);
                     }
-                    let client = new Redis(redisConfig);
-                    client.on('connect', () => {
-                        this.logger.info('redis client connect success');
-                    });
-                    client.on('error', (error: Error) => {
-                        this.logger.error('redis client error');
-                        this.logger.error(error);
-                    });
-                  
-                    // 添加一个加锁的批处理命令
-                    client.defineCommand('addlock', {
-                        numberOfKeys: 2,
-                        lua: `if redis.call('SETNX', KEYS[1], ARGV[1]) == 1 then redis.call('PEXPIRE',KEYS[1],ARGV[2]) return 1 else return 0 end`,
-                    });
-                    // 添加一个解锁的批处理命令
-                    client.defineCommand('dellock', {
-                        numberOfKeys: 1,
-                        lua: `if redis.call('get', KEYS[1]) == ARGV[1] then return redis.call('del', KEYS[1]) else return 0 end`,
-                    });
-                    this.client = client;
-
-                } catch (error) {
-                    this.logger.error(`Redis connection failed : ${error instanceof Error ? error.message : ""}}`);
-                    // 缓存中间件连接失败退出应用
-                    process.exit(1);
-                }
+                });
             }
             else this.logger.warn('No cache type found in config file')
         }

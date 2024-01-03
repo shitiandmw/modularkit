@@ -41,7 +41,7 @@ export class MongoManager {
         }
     }
 
-    public getInterface(pluginName: string) {
+    public getInterface(pluginName: string) : MongoInterface {
         return {
             createModel: (modelName: string, schema: Schema): Model<any> => {
                 const fullModelName = `p_${pluginName}_${modelName}`;

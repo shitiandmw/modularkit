@@ -79,7 +79,8 @@ export interface PluginDependencies {
     apiInterface?: ApiInterface;        // 接口通讯模块，通过插件的API注册、调用。实现插件之间的通讯
     mongoInterface?: MongoInterface;    // mongodb组件的数据访问功能，提供mongodb数据库管理功能
     redisInterface?: RedisInterface;    // redis缓存组件，提供缓存读写功能
-    loggerInterface?: LoggerInterface;  //日志管理器，统一的日志管理器，允许插件记录自己的日志
+    loggerInterface?: LoggerInterface;  // 日志管理器，统一的日志管理器，允许插件记录自己的日志
+    hookInterface?: HookInterface;      // 钩子管理器，提供插件直接的钩子函数注册与触发
 }
 ```
 

@@ -87,6 +87,7 @@ export interface PluginDependencies {
     mongoInterface?: MongoInterface;    // Data access functionality for the MongoDB component, providing MongoDB database management capabilities.
     redisInterface?: RedisInterface;    // Redis caching component, offering caching read and write functionality.
     loggerInterface?: LoggerInterface;  // Log manager, a unified log manager that allows plugins to record their own logs.
+    hookInterface?: HookInterface;      // Hook manager, providing plug-in direct hook function registration and triggering
 }
 ```
 For specific interface definitions, please refer to the source code. Documentation to follow.

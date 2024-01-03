@@ -14,7 +14,7 @@ export class EventManager extends EventEmitter {
      * @param pluginName 插件名
      * @returns 
      */
-    public getInterface(pluginName: string) {
+    public getInterface(pluginName: string):EventInterface {
         return {
             subscribe: (targetPluginName:string,event: string, listener: (...args: any[]) => void): void => {
                 const formattedEvent = this.formatEventName(targetPluginName, event);

@@ -4,6 +4,7 @@ import { MongoInterface } from './MongoManager';
 import { RouteInterface } from './RouteManager';
 import { LoggerInterface } from './LoggerManager';
 import { RedisInterface } from './RedisManager';
+import { HookInterface} from './HookManager';
 
 
 export interface PluginDependencies {
@@ -13,6 +14,7 @@ export interface PluginDependencies {
     mongoInterface?: MongoInterface;
     redisInterface?: RedisInterface;
     loggerInterface?: LoggerInterface;
+    hookInterface?: HookInterface;
 }
 
 export interface PluginInterface {

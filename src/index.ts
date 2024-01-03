@@ -2,13 +2,14 @@ import fs from 'fs';
 import path from 'path';
 import config from 'config';
 import { RouteManager } from './RouteManager';
-import { EventManager, EventInterface } from './EventManager';
+import { EventManager } from './EventManager';
 import { ApiManager } from './ApiManager';
 import { PluginInterface, PluginDependencies } from './PluginInterface';
 import { exec } from 'child_process';
-import { Pino, LoggerInterface } from './LoggerManager';
+import { LoggerManager, LoggerInterface } from './LoggerManager';
 import { MongoManager, DbConfig } from './MongoManager';
-import { CacheConfig, RedisManager, RedisInterface } from './RedisManager';
+import { CacheConfig, RedisManager } from './RedisManager';
+import { HookManager} from './HookManager';
 
 
 
@@ -34,16 +35,21 @@ export class PluginLoader {
     private apiManager: ApiManager;
     private mongoManager: MongoManager;
     private redisManager: RedisManager;
+    private loggerManager: LoggerManager;
 
     private pluginsPath: string;
     private logger: LoggerInterface;
 
+    private hookManager: HookManager;
+
     constructor(dependencies: PluginLoaderDependencies = {}) {
         this.pluginsPath = dependencies.pluginsPath || path.join(process.cwd(), 'plugins');
-        this.logger = dependencies.logger || Pino.getInstance();
-        this.routeManager = new RouteManager();
+        this.loggerManager = new LoggerManager();
+        this.logger = this.loggerManager.getInstance();
         this.eventManager = new EventManager();
         this.apiManager = new ApiManager();
+        this.routeManager = new RouteManager(this.logger);
+        this.hookManager = new HookManager(this.logger);
         this.mongoManager = new MongoManager(this.logger);
         this.redisManager = new RedisManager(this.logger);
     }
@@ -51,7 +57,7 @@ export class PluginLoader {
     // 初始化插件
     public async initialize() {
         await this.mongoManager.initialize();
-        this.redisManager.initialize();
+        await this.redisManager.initialize();
         await this.loadPlugins();
     }
 
@@ -127,7 +133,8 @@ export class PluginLoader {
                 apiInterface: this.apiManager.getInterface(pluginName),
                 mongoInterface: this.mongoManager.getInterface(pluginName),
                 redisInterface: this.redisManager.getInterface(pluginName),
-                loggerInterface: this.logger
+                loggerInterface: this.loggerManager.getInstance(pluginName),
+                hookInterface: this.hookManager.getInterface(pluginName)
             };
 
 
