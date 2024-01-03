@@ -1,5 +1,5 @@
 const Router = require('koa-router');
-const { promises } = require('readline');
+
 module.exports = class Plugin {
 
     constructor(dependencies) {
@@ -19,12 +19,26 @@ module.exports = class Plugin {
 
     initialize() {
         this.setupRoutes();
+
     }
 
+
+    
+    // 安装路由
     setupRoutes() {
         this.router.get('/', async ctx => {
             ctx.body = 'Response from Plugin A';
         });
+
+        this.router.get('/test_plugin_event', async ctx => {
+            let result = await this.app.pluginEvent.publish("testEvent","data from pluginA");
+            ctx.body = 'success';
+        });
+        this.router.get('/test_plugin_api', async ctx => {
+            let result = await this.app.pluginApi.callApi("pluginB","testapi");
+            ctx.body = 'Response from Plugin A test_plugin_api:' + result;
+        });
+
         this.router.get('/menu', async ctx => {
             
             const listeners = Array.from(this.app.hook.getHookListeners("register_menu"))
