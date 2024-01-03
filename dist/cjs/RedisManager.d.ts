@@ -10,7 +10,7 @@ export declare class RedisManager {
     private expSeconds;
     private client?;
     constructor(logger: LoggerInterface, expSeconds?: number);
-    initialize(): void;
+    initialize(): Promise<void>;
     isEmptyValue(value: string | Object | Array<any> | number | Buffer): boolean;
     setBase(key: string, value: Object | Array<any> | string | Buffer | number, expSeconds?: number, noNull?: boolean): Promise<"OK" | undefined>;
     /**

@@ -1,11 +1,12 @@
 import Router from 'koa-router';
+import { LoggerInterface } from './LoggerManager';
 export declare class RouteManager {
+    private logger;
     private globalRouter;
-    constructor();
+    constructor(logger: LoggerInterface);
     routeMiddleware(): Router.IMiddleware;
-    getInterface(pluginName: string): {
-        registerRoutes: (router: Router) => void;
-    };
+    errorHandler(ctx: any, next: any): Promise<void>;
+    getInterface(pluginName: string): RouteInterface;
 }
 export interface RouteInterface {
     /**

@@ -37,9 +37,7 @@ export declare class MongoManager {
     private mongooseInstance?;
     constructor(logger: LoggerInterface);
     initialize(): Promise<void>;
-    getInterface(pluginName: string): {
-        createModel: (modelName: string, schema: Schema) => Model<any>;
-    };
+    getInterface(pluginName: string): MongoInterface;
 }
 export interface MongoInterface {
     /**

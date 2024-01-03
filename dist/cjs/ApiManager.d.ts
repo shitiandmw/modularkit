@@ -2,10 +2,7 @@ type ApiHandler = (...args: any[]) => any;
 export declare class ApiManager {
     private apis;
     constructor();
-    getInterface(pluginName: string): {
-        registerApi: (apiName: string, handler: ApiHandler) => void;
-        callApi: (targetPluginName: string, apiName: string, ...args: any[]) => any;
-    };
+    getInterface(pluginName: string): ApiInterface;
 }
 export interface ApiInterface {
     /**

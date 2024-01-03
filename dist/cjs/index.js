@@ -13,6 +13,7 @@ const child_process_1 = require("child_process");
 const LoggerManager_1 = require("./LoggerManager");
 const MongoManager_1 = require("./MongoManager");
 const RedisManager_1 = require("./RedisManager");
+const HookManager_1 = require("./HookManager");
 /**
  * 插件加载器
  */
@@ -22,21 +23,25 @@ class PluginLoader {
     apiManager;
     mongoManager;
     redisManager;
+    loggerManager;
     pluginsPath;
     logger;
+    hookManager;
     constructor(dependencies = {}) {
         this.pluginsPath = dependencies.pluginsPath || path_1.default.join(process.cwd(), 'plugins');
-        this.logger = dependencies.logger || LoggerManager_1.Pino.getInstance();
-        this.routeManager = new RouteManager_1.RouteManager();
+        this.loggerManager = new LoggerManager_1.LoggerManager();
+        this.logger = this.loggerManager.getInstance();
         this.eventManager = new EventManager_1.EventManager();
         this.apiManager = new ApiManager_1.ApiManager();
+        this.routeManager = new RouteManager_1.RouteManager(this.logger);
+        this.hookManager = new HookManager_1.HookManager(this.logger);
         this.mongoManager = new MongoManager_1.MongoManager(this.logger);
         this.redisManager = new RedisManager_1.RedisManager(this.logger);
     }
     // 初始化插件
     async initialize() {
         await this.mongoManager.initialize();
-        this.redisManager.initialize();
+        await this.redisManager.initialize();
         await this.loadPlugins();
     }
     // 获取路由中间件
@@ -107,7 +112,8 @@ class PluginLoader {
                 apiInterface: this.apiManager.getInterface(pluginName),
                 mongoInterface: this.mongoManager.getInterface(pluginName),
                 redisInterface: this.redisManager.getInterface(pluginName),
-                loggerInterface: this.logger
+                loggerInterface: this.loggerManager.getInstance(pluginName),
+                hookInterface: this.hookManager.getInterface(pluginName)
             };
             const plugin = new PluginClass(pluginDependencies);
             plugin.initialize();

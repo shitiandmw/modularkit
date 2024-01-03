@@ -8,12 +8,7 @@ export declare class EventManager extends EventEmitter {
      * @param pluginName 插件名
      * @returns
      */
-    getInterface(pluginName: string): {
-        subscribe: (targetPluginName: string, event: string, listener: (...args: any[]) => void) => void;
-        subscribeOnce: (targetPluginName: string, event: string, listener: (...args: any[]) => void) => void;
-        publish: (event: string, data: any) => void;
-        unsubscribe: (targetPluginName: string, event: string, listener: (...args: any[]) => void) => void;
-    };
+    getInterface(pluginName: string): EventInterface;
 }
 export interface EventInterface {
     /**

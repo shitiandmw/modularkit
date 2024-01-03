@@ -4,9 +4,10 @@ import { RouteManager } from './RouteManager';
 import { EventManager } from './EventManager';
 import { ApiManager } from './ApiManager';
 import { exec } from 'child_process';
-import { Pino } from './LoggerManager';
+import { LoggerManager } from './LoggerManager';
 import { MongoManager } from './MongoManager';
 import { RedisManager } from './RedisManager';
+import { HookManager } from './HookManager';
 /**
  * 插件加载器
  */
@@ -16,21 +17,25 @@ export class PluginLoader {
     apiManager;
     mongoManager;
     redisManager;
+    loggerManager;
     pluginsPath;
     logger;
+    hookManager;
     constructor(dependencies = {}) {
         this.pluginsPath = dependencies.pluginsPath || path.join(process.cwd(), 'plugins');
-        this.logger = dependencies.logger || Pino.getInstance();
-        this.routeManager = new RouteManager();
+        this.loggerManager = new LoggerManager();
+        this.logger = this.loggerManager.getInstance();
         this.eventManager = new EventManager();
         this.apiManager = new ApiManager();
+        this.routeManager = new RouteManager(this.logger);
+        this.hookManager = new HookManager(this.logger);
         this.mongoManager = new MongoManager(this.logger);
         this.redisManager = new RedisManager(this.logger);
     }
     // 初始化插件
     async initialize() {
         await this.mongoManager.initialize();
-        this.redisManager.initialize();
+        await this.redisManager.initialize();
         await this.loadPlugins();
     }
     // 获取路由中间件
@@ -101,7 +106,8 @@ export class PluginLoader {
                 apiInterface: this.apiManager.getInterface(pluginName),
                 mongoInterface: this.mongoManager.getInterface(pluginName),
                 redisInterface: this.redisManager.getInterface(pluginName),
-                loggerInterface: this.logger
+                loggerInterface: this.loggerManager.getInstance(pluginName),
+                hookInterface: this.hookManager.getInterface(pluginName)
             };
             const plugin = new PluginClass(pluginDependencies);
             plugin.initialize();
