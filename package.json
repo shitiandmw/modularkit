@@ -1,6 +1,6 @@
 {
   "name": "wbrick",
-  "version": "0.0.13",
+  "version": "0.0.14",
   "description": "WBrick is a plugin-based system framework designed for Node.js web applications. It allows developers to build and manage application features in a modular way, providing flexible plugin loading, route management, event handling, and database interaction.",
   "main": "dist/cjs/index.js",
   "module": "dist/esm/index.js",
