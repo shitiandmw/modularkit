@@ -120,4 +120,5 @@ export class PluginLoader {
 }
 export { BaseContext, Service, Controller } from './core/BaseContext';
 export { Loader } from './core/Loader';
+export { Plugin } from './PluginInterface';
 //# sourceMappingURL=index.js.map

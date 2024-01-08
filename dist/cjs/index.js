@@ -3,7 +3,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.Loader = exports.Controller = exports.Service = exports.BaseContext = exports.PluginLoader = void 0;
+exports.Plugin = exports.Loader = exports.Controller = exports.Service = exports.BaseContext = exports.PluginLoader = void 0;
 const fs_1 = __importDefault(require("fs"));
 const path_1 = __importDefault(require("path"));
 const RouteManager_1 = require("./RouteManager");
@@ -131,4 +131,6 @@ Object.defineProperty(exports, "Service", { enumerable: true, get: function () {
 Object.defineProperty(exports, "Controller", { enumerable: true, get: function () { return BaseContext_1.Controller; } });
 var Loader_1 = require("./core/Loader");
 Object.defineProperty(exports, "Loader", { enumerable: true, get: function () { return Loader_1.Loader; } });
+var PluginInterface_1 = require("./PluginInterface");
+Object.defineProperty(exports, "Plugin", { enumerable: true, get: function () { return PluginInterface_1.Plugin; } });
 //# sourceMappingURL=index.js.map

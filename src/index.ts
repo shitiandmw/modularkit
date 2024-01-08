@@ -145,5 +145,7 @@ export class PluginLoader {
     }
 }
 
-export { BaseContext , Service, Controller } from './core/BaseContext';
+export { BaseContext, Service, Controller } from './core/BaseContext';
 export { Loader } from './core/Loader';
+export { Plugin, PluginInterface, PluginDependencies } from './PluginInterface';
+export {MongoInterface} from './MongoManager';
