@@ -1,10 +1,8 @@
 /// <reference types="koa-router" />
-import { LoggerInterface } from './LoggerManager';
 import { DbConfig } from './MongoManager';
 import { CacheConfig } from './RedisManager';
 export interface PluginLoaderDependencies {
     pluginsPath?: string;
-    logger?: LoggerInterface;
 }
 export interface AppConfig {
     db: DbConfig;

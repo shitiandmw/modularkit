@@ -16,8 +16,6 @@ import { HookManager} from './HookManager';
 export interface PluginLoaderDependencies {
     // 自定义的插件路径
     pluginsPath?: string;
-    // 日志记录器
-    logger?: LoggerInterface;
 }
 
 

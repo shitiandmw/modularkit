@@ -6,8 +6,14 @@
   "module": "dist/esm/index.js",
   "types": "dist/esm/index.d.ts",
   "exports": {
-    "import": "./dist/esm/index.js",
-    "require": "./dist/cjs/index.js"
+    ".": {
+      "import": "./dist/esm/index.js",
+      "require": "./dist/cjs/index.js"
+    },
+    "./core": {
+      "import": "./dist/esm/core/index.js",
+      "require": "./dist/cjs/core/index.js"
+    }
   },
   "scripts": {
     "build": "tsc -p tsconfig.cjs.json && tsc -p tsconfig.esm.json",
