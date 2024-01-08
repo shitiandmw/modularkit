@@ -9,7 +9,7 @@ import { exec } from 'child_process';
 import { LoggerManager, LoggerInterface } from './LoggerManager';
 import { MongoManager, DbConfig } from './MongoManager';
 import { CacheConfig, RedisManager } from './RedisManager';
-import { HookManager} from './HookManager';
+import { HookManager } from './HookManager';
 
 
 
@@ -144,3 +144,6 @@ export class PluginLoader {
         }
     }
 }
+
+export { BaseContext , Service, Controller } from './core/BaseContext';
+export { Loader } from './core/Loader';

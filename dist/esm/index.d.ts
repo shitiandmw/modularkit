@@ -28,3 +28,5 @@ export declare class PluginLoader {
     private installPluginNPM;
     private loadPlugin;
 }
+export { BaseContext, Service, Controller } from './core/BaseContext';
+export { Loader } from './core/Loader';

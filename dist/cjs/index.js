@@ -3,7 +3,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.PluginLoader = void 0;
+exports.Loader = exports.Controller = exports.Service = exports.BaseContext = exports.PluginLoader = void 0;
 const fs_1 = __importDefault(require("fs"));
 const path_1 = __importDefault(require("path"));
 const RouteManager_1 = require("./RouteManager");
@@ -125,4 +125,10 @@ class PluginLoader {
     }
 }
 exports.PluginLoader = PluginLoader;
+var BaseContext_1 = require("./core/BaseContext");
+Object.defineProperty(exports, "BaseContext", { enumerable: true, get: function () { return BaseContext_1.BaseContext; } });
+Object.defineProperty(exports, "Service", { enumerable: true, get: function () { return BaseContext_1.Service; } });
+Object.defineProperty(exports, "Controller", { enumerable: true, get: function () { return BaseContext_1.Controller; } });
+var Loader_1 = require("./core/Loader");
+Object.defineProperty(exports, "Loader", { enumerable: true, get: function () { return Loader_1.Loader; } });
 //# sourceMappingURL=index.js.map
