@@ -44,6 +44,11 @@ export class RouteManager {
                 prefixedRouter.use(`/${pluginName}`, router.routes(), router.allowedMethods());
                 // 将前缀化的路由注册到全局路由器中
                 this.globalRouter.use(prefixedRouter.routes(), prefixedRouter.allowedMethods());
+            },
+            getPluginPrefix: (targetPluginName?: string): string => {
+                if(!targetPluginName)  targetPluginName = pluginName;
+                // 暂时直接返回插件名作为前缀，后面可能会有更改
+                return `/${targetPluginName}`;
             }
         };
     }
@@ -56,4 +61,10 @@ export interface RouteInterface {
      * @param router 路由器 
      */
     registerRoutes: (router: Router) => void;
+    /**
+     * 获取插件路由前缀 (插件路由默认的前缀是 /插件名 ，但后续可能会有目录映射，所以公开一个方法获取真实的插件路由前缀)
+     * @param targetPluginName 插件名 
+     * @returns 
+     */
+    getPluginPrefix: (targetPluginName?: string) => string;
 }

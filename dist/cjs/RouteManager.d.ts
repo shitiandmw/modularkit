@@ -15,4 +15,10 @@ export interface RouteInterface {
      * @param router 路由器
      */
     registerRoutes: (router: Router) => void;
+    /**
+     * 获取插件路由前缀 (插件路由默认的前缀是 /插件名 ，但后续可能会有目录映射，所以公开一个方法获取真实的插件路由前缀)
+     * @param targetPluginName 插件名
+     * @returns
+     */
+    getPluginPrefix: (targetPluginName?: string) => string;
 }
